@@ -64,7 +64,7 @@
   
     // Submit feedback to the backend
     function submitFeedback(websiteId, feedback) {
-      fetch('http://localhost:3000/api/feedback', {
+      fetch('https://get-your-feedback.vercel.app/api/feedback', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
