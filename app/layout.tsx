@@ -6,7 +6,10 @@ import Logo from "../components/Logo";
 
 export const metadata: Metadata = {
   title: "Get Your Feedback | GYF",
-  description: "A production-ready authentication flow with Next.js and Supabase.",
+  description: "A production-ready Get Your Feedback App to fetch user feedback for your project.",
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
@@ -16,6 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className={`${GeistSans.variable} ${GeistMono.variable}`}>
+
       <body className="bg-gray-50 text-gray-900">
         <div className="pt-5"> {/* Add padding-top to the container */}
           <Logo />
@@ -25,3 +29,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+
