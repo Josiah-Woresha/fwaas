@@ -1,16 +1,14 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { supabase } from '../../../lib/supabaseClient';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { useState } from "react";
+import { supabase } from "../../../lib/supabaseClient";
+import Link from "next/link";
 
 export default function ResetPassword() {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
-  const router = useRouter();
 
   const handleResetPassword = async () => {
     setLoading(true);
@@ -22,7 +20,7 @@ export default function ResetPassword() {
     if (error) {
       setError(error.message);
     } else {
-      setMessage('Password reset email sent. Check your inbox.');
+      setMessage("Password reset email sent. Check your inbox.");
     }
 
     setLoading(false);
@@ -72,7 +70,7 @@ export default function ResetPassword() {
               disabled={loading}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
-              {loading ? 'Sending...' : 'Send reset email'}
+              {loading ? "Sending..." : "Send reset email"}
             </button>
           </div>
         </form>

@@ -17,7 +17,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={`${GeistSans.variable} ${GeistMono.variable}`}>
       <body className="bg-gray-50 text-gray-900">
-        <Logo />
+        <div className="pt-5"> {/* Add padding-top to the container */}
+          <Logo />
+        </div>
         {children}
       </body>
     </html>

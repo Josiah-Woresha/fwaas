@@ -4,10 +4,23 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../../lib/supabaseClient";
 
+// Define types for your data
+interface User {
+  first_name: string;
+  id: string;
+}
+
+interface Workspace {
+  id: string;
+  name: string;
+  password: string;
+  user_id: string;
+}
+
 export default function Home() {
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<{ first_name: string; id: string } | null>(null);
-  const [workspaces, setWorkspaces] = useState<any[]>([]);
+  const [user, setUser] = useState<User | null>(null);
+  const [workspaces, setWorkspaces] = useState<Workspace[]>([]); // Properly typed
   const router = useRouter();
 
   useEffect(() => {
@@ -45,7 +58,7 @@ export default function Home() {
     };
 
     fetchData();
-  }, []);
+  }, [router]); // Added `router` to the dependency array
 
   const handleLogout = async () => {
     await supabase.auth.signOut();

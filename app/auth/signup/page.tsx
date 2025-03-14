@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { supabase } from '../../../lib/supabaseClient';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { useState } from "react";
+import { supabase } from "../../../lib/supabaseClient";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function SignUp() {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -21,19 +21,19 @@ export default function SignUp() {
   // Password validation function
   const validatePassword = (password: string) => {
     const errors = [];
-    
+
     if (password.length < 8) {
       errors.push("Password must be at least 8 characters long");
     }
-    
+
     if (!/[A-Z]/.test(password)) {
       errors.push("Password must contain at least one uppercase letter");
     }
-    
+
     if (!/\d/.test(password)) {
       errors.push("Password must contain at least one number");
     }
-    
+
     return errors;
   };
 
@@ -48,15 +48,15 @@ export default function SignUp() {
   const checkEmailExists = async (email: string) => {
     try {
       // Check if the email exists in the auth system
-      const { data, error } = await supabase
-        .from('users')
-        .select('email')
-        .eq('email', email)
+      const { data } = await supabase
+        .from("users")
+        .select("email")
+        .eq("email", email)
         .single();
-      
+
       return data !== null;
     } catch (error) {
-      console.error('Error checking email:', error);
+      console.error("Error checking email:", error);
       return false;
     }
   };
@@ -70,7 +70,7 @@ export default function SignUp() {
     }
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match.');
+      setError("Passwords do not match.");
       return;
     }
 
@@ -82,7 +82,9 @@ export default function SignUp() {
       // Check if email already exists
       const emailExists = await checkEmailExists(email);
       if (emailExists) {
-        setError('An account with this email already exists. Please use a different email or log in.');
+        setError(
+          "An account with this email already exists. Please use a different email or log in."
+        );
         setLoading(false);
         return;
       }
@@ -95,24 +97,24 @@ export default function SignUp() {
 
       if (authError) {
         // Handle specific auth errors
-        if (authError.message.includes('already registered')) {
-          throw new Error('An account with this email already exists. Please use a different email or log in.');
+        if (authError.message.includes("already registered")) {
+          throw new Error(
+            "An account with this email already exists. Please use a different email or log in."
+          );
         }
         throw authError;
       }
 
       // Step 2: Save additional user info in the users table
-      const { error: dbError } = await supabase
-        .from('users')
-        .insert([
-          {
-            id: authData.user?.id, // Use the user ID from Supabase Auth
-            email,
-            first_name: firstName,
-            last_name: lastName,
-            password_hash: password, // In production, hash the password before saving
-          },
-        ]);
+      const { error: dbError } = await supabase.from("users").insert([
+        {
+          id: authData.user?.id, // Use the user ID from Supabase Auth
+          email,
+          first_name: firstName,
+          last_name: lastName,
+          password_hash: password, // In production, hash the password before saving
+        },
+      ]);
 
       if (dbError) {
         throw dbError;
@@ -120,10 +122,14 @@ export default function SignUp() {
 
       setSuccess(true);
       setTimeout(() => {
-        router.push('/auth/login');
+        router.push("/auth/login");
       }, 2000); // Redirect to login after 2 seconds
-    } catch (error: any) {
-      setError(error.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred.");
+      }
     } finally {
       setLoading(false);
     }
@@ -204,11 +210,11 @@ export default function SignUp() {
               <input
                 id="password"
                 name="password"
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 autoComplete="new-password"
                 required
                 className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${
-                  passwordErrors.length > 0 ? 'border-red-300' : 'border-gray-300'
+                  passwordErrors.length > 0 ? "border-red-300" : "border-gray-300"
                 } placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
                 placeholder="Password"
                 value={password}
@@ -222,7 +228,7 @@ export default function SignUp() {
               <input
                 id="confirm-password"
                 name="confirm-password"
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 autoComplete="new-password"
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
@@ -232,18 +238,30 @@ export default function SignUp() {
               />
             </div>
           </div>
-          
+
           {/* Password requirements message */}
           <div className="text-sm text-gray-600">
             Password must contain:
             <ul className="list-disc pl-5 mt-1">
-              <li className={`${password.length >= 8 ? 'text-green-600' : 'text-gray-600'}`}>
+              <li
+                className={`${
+                  password.length >= 8 ? "text-green-600" : "text-gray-600"
+                }`}
+              >
                 At least 8 characters
               </li>
-              <li className={`${/[A-Z]/.test(password) ? 'text-green-600' : 'text-gray-600'}`}>
+              <li
+                className={`${
+                  /[A-Z]/.test(password) ? "text-green-600" : "text-gray-600"
+                }`}
+              >
                 At least one uppercase letter
               </li>
-              <li className={`${/\d/.test(password) ? 'text-green-600' : 'text-gray-600'}`}>
+              <li
+                className={`${
+                  /\d/.test(password) ? "text-green-600" : "text-gray-600"
+                }`}
+              >
                 At least one number
               </li>
             </ul>
@@ -269,7 +287,7 @@ export default function SignUp() {
               disabled={loading || passwordErrors.length > 0}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-blue-300"
             >
-              {loading ? 'Signing up...' : 'Sign up'}
+              {loading ? "Signing up..." : "Sign up"}
             </button>
           </div>
         </form>

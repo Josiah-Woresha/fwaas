@@ -3,7 +3,22 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { supabase } from "../../../lib/supabaseClient";
-import { FaTrash, FaArrowLeft, FaEllipsisV } from "react-icons/fa"; // Import icons
+import { FaTrash, FaArrowLeft, FaCopy } from "react-icons/fa"; // Added FaCopy
+
+// Define types
+interface Workspace {
+  id: string;
+  name: string;
+  password: string;
+}
+
+interface Feedback {
+  id: string;
+  feedback: string;
+  status: string;
+  created_at: string;
+  website_id: string;
+}
 
 export default function WorkspacePage() {
   const params = useParams();
@@ -12,11 +27,12 @@ export default function WorkspacePage() {
   const workspaceId = params?.workspaceId || params?.id; // Ensure correct key
   console.log("Extracted workspaceId:", workspaceId);
 
-  const [workspace, setWorkspace] = useState<any>(null);
-  const [feedback, setFeedback] = useState<any[]>([]); // State for feedback
-  const [selectedFeedback, setSelectedFeedback] = useState<string[]>([]); // State for selected feedback IDs
+  const [workspace, setWorkspace] = useState<Workspace | null>(null); // Updated type
+  const [feedback, setFeedback] = useState<Feedback[]>([]); // Updated type
+  const [selectedFeedback, setSelectedFeedback] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isCopied, setIsCopied] = useState(false); // State for copied status
   const router = useRouter();
 
   useEffect(() => {
@@ -63,6 +79,19 @@ export default function WorkspacePage() {
 
     fetchWorkspaceAndFeedback();
   }, [workspaceId]);
+
+  // Function to copy workspace ID to clipboard
+  const copyWorkspaceId = async () => {
+    if (!workspace) return;
+
+    try {
+      await navigator.clipboard.writeText(workspace.id);
+      setIsCopied(true); // Set copied status to true
+      setTimeout(() => setIsCopied(false), 2000); // Reset copied status after 2 seconds
+    } catch (err) {
+      console.error("Failed to copy workspace ID:", err);
+    }
+  };
 
   const handleDeleteWorkspace = async () => {
     if (!workspace) return;
@@ -156,6 +185,7 @@ export default function WorkspacePage() {
 
   if (loading) return <div className="p-8">Loading...</div>;
   if (error) return <div className="p-8 text-red-500">{error}</div>;
+  if (!workspace) return <div className="p-8 text-red-500">Workspace not found.</div>;
 
   return (
     <div className="p-8">
@@ -180,7 +210,17 @@ export default function WorkspacePage() {
       <h1 className="text-2xl font-bold mb-4">Workspace Details</h1>
       <div className="bg-gray-100 p-4 rounded">
         <p><strong>Name:</strong> {workspace.name}</p>
-        <p><strong>ID:</strong> {workspace.id}</p>
+        <p className="flex items-center">
+          <strong>ID:</strong> {workspace.id}
+          <button
+            onClick={copyWorkspaceId}
+            className="ml-2 text-gray-600 hover:text-gray-900"
+            title="Copy Workspace ID"
+          >
+            <FaCopy className="w-4 h-4" />
+          </button>
+          {isCopied && <span className="ml-2 text-green-600">Copied!</span>}
+        </p>
         <p><strong>Password:</strong> {workspace.password}</p>
       </div>
 
