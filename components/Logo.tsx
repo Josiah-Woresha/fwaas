@@ -9,7 +9,7 @@ function Navbar() {
 
   return (
     <nav>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
         <div className="flex items-center justify-between h-16">
           {/* Empty div to balance the layout (left side) */}
           <div className="invisible">
@@ -30,13 +30,13 @@ function Navbar() {
 
           {/* Right: Integration Guide Link */}
           <div className="flex items-center">
-          <button
-            onClick={() => router.push('/integration')}
-            className="px-4 py-2 text-sm sm:text-base font-medium text-white bg-blue-600 
-                      hover:bg-blue-700 rounded-lg transition-all duration-200"
-          >
-            Integration
-          </button>
+            <button
+              onClick={() => router.push('/integration')}
+              className="px-4 py-2 text-sm sm:text-base font-medium text-white bg-blue-600 
+                        hover:bg-blue-700 rounded-lg transition-all duration-200"
+            >
+              Integration
+            </button>
           </div>
         </div>
       </div>
@@ -46,7 +46,7 @@ function Navbar() {
 
 export default function Logo() {
   return (
-    <div className="mt-4">
+    <div className="mt-8"> {/* Increased margin top to mt-8 */}
       <Navbar />
     </div>
   );
