@@ -18,7 +18,7 @@ declare global {
 export default function FeedbackWidget() {
   return (
     <Script
-      src="http://localhost:3000/widget.js"
+      src="https://get-your-feedback.vercel.app/widget.js"
       strategy="afterInteractive"
       onLoad={() => {
         // Initialize the feedback widget after the script has loaded
