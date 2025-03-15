@@ -107,25 +107,27 @@ export default function WorkspacePage() {
   };
 
   // Function to update feedback status
-  const updateFeedbackStatus = async (feedbackIds: string[], status: string) => {
-    const { error } = await supabase
-      .from("feedback")
-      .update({ status })
-      .in("id", feedbackIds);
+// Function to update feedback status
+const updateFeedbackStatus = async (feedbackIds: string[], status: string) => {
+  const { error } = await supabase
+    .from("feedback")
+    .update({ status })
+    .in("id", feedbackIds);
 
-    if (error) {
-      console.error("Error updating feedback status:", error);
-      alert("Failed to update feedback status. Please try again.");
-    } else {
-      // Update the local state
-      setFeedback((prevFeedback) =>
-        prevFeedback.map((item) =>
-          feedbackIds.includes(item.id) ? { ...item, status } : item
-        )
-      );
-      alert("Feedback status updated successfully!");
-    }
-  };
+  if (error) {
+    console.error("Error updating feedback status:", error);
+    alert("Failed to update feedback status. Please try again.");
+  } else {
+    // Update the local state
+    setFeedback((prevFeedback) =>
+      prevFeedback.map((item) =>
+        feedbackIds.includes(item.id) ? { ...item, status } : item
+      )
+    );
+    alert("Feedback status updated successfully!");
+    setSelectedFeedback([]); // Clear selected feedback after updating status
+  }
+};
 
   // Function to delete feedback
   const deleteFeedback = async (feedbackIds: string[]) => {

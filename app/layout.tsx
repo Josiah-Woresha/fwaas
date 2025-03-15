@@ -26,9 +26,7 @@ export default function RootLayout({
         <FeedbackWidget />
       </head>
       <body className="bg-gray-50 text-gray-900">
-        <div className="pt-5"> {/* Add padding-top to the container */}
-          <Logo />
-        </div>
+        <Logo /> {/* Logo component is now at the top of the page */}
         {children}
       </body>
     </html>
