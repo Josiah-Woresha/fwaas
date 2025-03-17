@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../lib/supabaseClient";
 import { FaArrowLeft } from "react-icons/fa"; // Import the back arrow icon
+import { useTheme } from '../../components/ThemeContext/ThemeContext'; // Import the ThemeProvider
 
 export default function NewWorkspace() {
   const [workspaceName, setWorkspaceName] = useState("");
@@ -11,6 +12,7 @@ export default function NewWorkspace() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const router = useRouter();
+  const { theme } = useTheme(); // Use the theme context
 
   const handleCreateWorkspace = async () => {
     if (!workspaceName.trim()) {
@@ -56,11 +58,11 @@ export default function NewWorkspace() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className={`min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8`}>
       {/* Back Arrow (Fixed at Top-Left Corner) */}
       <button
         onClick={() => router.push("/auth/loggedin")}
-        className="fixed top-4 left-4 text-gray-600 hover:text-gray-900 transition-colors"
+        className="fixed top-4 left-4 text-gray-600 dark:text-gray-100 hover:text-gray-900 dark:hover:text-gray-300 transition-colors"
         title="Back to Dashboard"
       >
         <FaArrowLeft className="w-6 h-6" />
@@ -68,18 +70,18 @@ export default function NewWorkspace() {
 
       {/* Centered Form Container */}
       <div className="max-w-md w-full space-y-8">
-        <h2 className="text-center text-3xl font-extrabold text-gray-900">Create New Workspace</h2>
+        <h2 className="text-center text-3xl font-extrabold text-gray-900 dark:text-gray-100">Create New Workspace</h2>
 
         {/* Error Message */}
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+          <div className="bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-100 px-4 py-3 rounded">
             {error}
           </div>
         )}
 
         {/* Success Message */}
         {success && (
-          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+          <div className="bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-700 text-green-700 dark:text-green-100 px-4 py-3 rounded">
             Workspace created successfully! Redirecting...
           </div>
         )}
@@ -89,7 +91,7 @@ export default function NewWorkspace() {
           <div>
             <input
               type="text"
-              className="appearance-none w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="appearance-none w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
               placeholder="Workspace Name"
               value={workspaceName}
               onChange={(e) => setWorkspaceName(e.target.value)}
@@ -117,4 +119,3 @@ export default function NewWorkspace() {
     </div>
   );
 }
-

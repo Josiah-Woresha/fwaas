@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { supabase } from "../../../lib/supabaseClient";
 import { FaTrash, FaArrowLeft, FaCopy } from "react-icons/fa"; // Added FaCopy
+import { useTheme } from '../../../components/ThemeContext/ThemeContext'; // Import the ThemeProvider
 
 // Define types
 interface Workspace {
@@ -34,6 +35,7 @@ export default function WorkspacePage() {
   const [error, setError] = useState<string | null>(null);
   const [isCopied, setIsCopied] = useState(false); // State for copied status
   const router = useRouter();
+  const { theme } = useTheme(); // Use the theme context
 
   useEffect(() => {
     if (!workspaceId) {
@@ -107,27 +109,26 @@ export default function WorkspacePage() {
   };
 
   // Function to update feedback status
-// Function to update feedback status
-const updateFeedbackStatus = async (feedbackIds: string[], status: string) => {
-  const { error } = await supabase
-    .from("feedback")
-    .update({ status })
-    .in("id", feedbackIds);
+  const updateFeedbackStatus = async (feedbackIds: string[], status: string) => {
+    const { error } = await supabase
+      .from("feedback")
+      .update({ status })
+      .in("id", feedbackIds);
 
-  if (error) {
-    console.error("Error updating feedback status:", error);
-    alert("Failed to update feedback status. Please try again.");
-  } else {
-    // Update the local state
-    setFeedback((prevFeedback) =>
-      prevFeedback.map((item) =>
-        feedbackIds.includes(item.id) ? { ...item, status } : item
-      )
-    );
-    alert("Feedback status updated successfully!");
-    setSelectedFeedback([]); // Clear selected feedback after updating status
-  }
-};
+    if (error) {
+      console.error("Error updating feedback status:", error);
+      alert("Failed to update feedback status. Please try again.");
+    } else {
+      // Update the local state
+      setFeedback((prevFeedback) =>
+        prevFeedback.map((item) =>
+          feedbackIds.includes(item.id) ? { ...item, status } : item
+        )
+      );
+      alert("Feedback status updated successfully!");
+      setSelectedFeedback([]); // Clear selected feedback after updating status
+    }
+  };
 
   // Function to delete feedback
   const deleteFeedback = async (feedbackIds: string[]) => {
@@ -190,12 +191,12 @@ const updateFeedbackStatus = async (feedbackIds: string[], status: string) => {
   if (!workspace) return <div className="p-8 text-red-500">Workspace not found.</div>;
 
   return (
-    <div className="p-8">
+    <div className={`p-8 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100`}>
       {/* Top Bar with Back Arrow and Delete Workspace Button */}
       <div className="flex justify-between items-center mb-6">
         <button
           onClick={() => router.push("/auth/loggedin")}
-          className="text-gray-600 hover:text-gray-900"
+          className="text-gray-600 dark:text-gray-100 hover:text-gray-900 dark:hover:text-gray-300"
           title="Back to Dashboard"
         >
           <FaArrowLeft className="w-6 h-6" />
@@ -210,13 +211,13 @@ const updateFeedbackStatus = async (feedbackIds: string[], status: string) => {
       </div>
 
       <h1 className="text-2xl font-bold mb-4">Workspace Details</h1>
-      <div className="bg-gray-100 p-4 rounded">
+      <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded">
         <p><strong>Name:</strong> {workspace.name}</p>
         <p className="flex items-center">
           <strong>ID:</strong> {workspace.id}
           <button
             onClick={copyWorkspaceId}
-            className="ml-2 text-gray-600 hover:text-gray-900"
+            className="ml-2 text-gray-600 dark:text-gray-100 hover:text-gray-900 dark:hover:text-gray-300"
             title="Copy Workspace ID"
           >
             <FaCopy className="w-4 h-4" />
@@ -234,7 +235,7 @@ const updateFeedbackStatus = async (feedbackIds: string[], status: string) => {
         <div className="mb-4 flex items-center space-x-4">
           <select
             onChange={(e) => handleAction(e.target.value)}
-            className="p-2 border border-gray-300 rounded"
+            className="p-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
           >
             <option value="">Select Action</option>
             <option value="seen">Mark as Seen</option>
@@ -244,7 +245,7 @@ const updateFeedbackStatus = async (feedbackIds: string[], status: string) => {
             <option value="ignore">Mark as Ignored</option>
             <option value="delete">Delete Selected</option>
           </select>
-          <span className="text-gray-600">
+          <span className="text-gray-600 dark:text-gray-400">
             {selectedFeedback.length} feedback selected
           </span>
         </div>
@@ -256,7 +257,7 @@ const updateFeedbackStatus = async (feedbackIds: string[], status: string) => {
             {feedback.map((item) => (
               <li
                 key={item.id}
-                className="bg-white p-3 rounded shadow hover:shadow-md transition-shadow"
+                className="bg-white dark:bg-gray-800 p-3 rounded shadow hover:shadow-md transition-shadow"
               >
                 <div className="flex justify-between items-center">
                   <div className="flex items-center">
@@ -275,7 +276,7 @@ const updateFeedbackStatus = async (feedbackIds: string[], status: string) => {
                     />
                     <div className="flex-1">
                       {/* Feedback Text */}
-                      <p className="text-gray-900 text-sm font-medium">
+                      <p className="text-gray-900 dark:text-gray-100 text-sm font-medium">
                         {item.feedback}
                       </p>
                       {/* New and Status Badges */}
@@ -285,7 +286,7 @@ const updateFeedbackStatus = async (feedbackIds: string[], status: string) => {
                             New
                           </span>
                         )}
-                        <span className="text-xs text-gray-600">
+                        <span className="text-xs text-gray-600 dark:text-gray-400">
                           Status: <span className="font-semibold">{item.status}</span>
                         </span>
                       </div>

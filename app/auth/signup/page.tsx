@@ -4,6 +4,7 @@ import { useState } from "react";
 import { supabase } from "../../../lib/supabaseClient";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useTheme } from '../../../components/ThemeContext/ThemeContext'; // Import the ThemeProvider
 
 export default function SignUp() {
   const [firstName, setFirstName] = useState("");
@@ -17,6 +18,7 @@ export default function SignUp() {
   const [success, setSuccess] = useState(false);
   const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
   const router = useRouter();
+  const { theme } = useTheme(); // Use the theme context
 
   // Password validation function
   const validatePassword = (password: string) => {
@@ -136,20 +138,20 @@ export default function SignUp() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className={`min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8`}>
       <div className="max-w-md w-full space-y-8">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-gray-100">
             Create an account
           </h2>
         </div>
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+          <div className="bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-100 px-4 py-3 rounded relative">
             {error}
           </div>
         )}
         {success && (
-          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative">
+          <div className="bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-700 text-green-700 dark:text-green-100 px-4 py-3 rounded relative">
             Account created successfully! Redirecting to login...
           </div>
         )}
@@ -165,7 +167,7 @@ export default function SignUp() {
                 type="text"
                 autoComplete="given-name"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm bg-white dark:bg-gray-800"
                 placeholder="First Name"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
@@ -181,7 +183,7 @@ export default function SignUp() {
                 type="text"
                 autoComplete="family-name"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm bg-white dark:bg-gray-800"
                 placeholder="Last Name"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
@@ -197,7 +199,7 @@ export default function SignUp() {
                 type="email"
                 autoComplete="email"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm bg-white dark:bg-gray-800"
                 placeholder="Email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -214,8 +216,8 @@ export default function SignUp() {
                 autoComplete="new-password"
                 required
                 className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${
-                  passwordErrors.length > 0 ? "border-red-300" : "border-gray-300"
-                } placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
+                  passwordErrors.length > 0 ? "border-red-300" : "border-gray-300 dark:border-gray-600"
+                } placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm bg-white dark:bg-gray-800`}
                 placeholder="Password"
                 value={password}
                 onChange={handlePasswordChange}
@@ -231,7 +233,7 @@ export default function SignUp() {
                 type={showPassword ? "text" : "password"}
                 autoComplete="new-password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm bg-white dark:bg-gray-800"
                 placeholder="Confirm Password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
@@ -240,26 +242,26 @@ export default function SignUp() {
           </div>
 
           {/* Password requirements message */}
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-gray-600 dark:text-gray-400">
             Password must contain:
             <ul className="list-disc pl-5 mt-1">
               <li
                 className={`${
-                  password.length >= 8 ? "text-green-600" : "text-gray-600"
+                  password.length >= 8 ? "text-green-600" : "text-gray-600 dark:text-gray-400"
                 }`}
               >
                 At least 8 characters
               </li>
               <li
                 className={`${
-                  /[A-Z]/.test(password) ? "text-green-600" : "text-gray-600"
+                  /[A-Z]/.test(password) ? "text-green-600" : "text-gray-600 dark:text-gray-400"
                 }`}
               >
                 At least one uppercase letter
               </li>
               <li
                 className={`${
-                  /\d/.test(password) ? "text-green-600" : "text-gray-600"
+                  /\d/.test(password) ? "text-green-600" : "text-gray-600 dark:text-gray-400"
                 }`}
               >
                 At least one number
@@ -272,11 +274,11 @@ export default function SignUp() {
               id="show-password"
               name="show-password"
               type="checkbox"
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800"
               checked={showPassword}
               onChange={(e) => setShowPassword(e.target.checked)}
             />
-            <label htmlFor="show-password" className="ml-2 block text-sm text-gray-900">
+            <label htmlFor="show-password" className="ml-2 block text-sm text-gray-900 dark:text-gray-100">
               Show password
             </label>
           </div>
@@ -294,7 +296,7 @@ export default function SignUp() {
         <div className="text-center">
           <Link
             href="/auth/login"
-            className="text-sm text-blue-600 hover:text-blue-500"
+            className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300"
           >
             Already have an account? Log in
           </Link>

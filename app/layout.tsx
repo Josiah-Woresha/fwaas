@@ -4,6 +4,7 @@ import { GeistMono } from 'geist/font/mono';
 import './globals.css';
 import Logo from '../components/Logo';
 import FeedbackWidget from '../components/FeedbackWidget/FeedbackWidget'; // Import the Client Component
+import { ThemeProvider } from '../components/ThemeContext/ThemeContext'; // Import the ThemeProvider
 
 // Define metadata
 export const metadata: Metadata = {
@@ -25,9 +26,12 @@ export default function RootLayout({
         {/* Embed the feedback widget script */}
         <FeedbackWidget />
       </head>
-      <body className="bg-gray-50 text-gray-900">
-        <Logo /> {/* Logo component is now at the top of the page */}
-        {children}
+      <body className="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+        {/* Wrap the app with ThemeProvider */}
+        <ThemeProvider>
+          <Logo /> {/* Logo component is now at the top of the page */}
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

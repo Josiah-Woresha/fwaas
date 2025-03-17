@@ -1,9 +1,11 @@
+// Home.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '../../../lib/supabaseClient';
 import { Exo, Roboto } from 'next/font/google';
+import { useTheme } from '../../../components/ThemeContext/ThemeContext'; // Import the ThemeProvider
 
 // Define fonts
 const poppins = Exo({ weight: '600', subsets: ['latin'] }); // For headings
@@ -25,9 +27,11 @@ interface Workspace {
 export default function Home() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
-  const [workspaces, setWorkspaces] = useState<Workspace[]>([]); // Properly typed
+  const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
   const router = useRouter();
+  const { theme, toggleTheme } = useTheme(); // Use the theme context
 
+  // Fetch data on mount
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -63,7 +67,7 @@ export default function Home() {
     };
 
     fetchData();
-  }, [router]); // Added `router` to the dependency array
+  }, [router]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -85,7 +89,7 @@ export default function Home() {
 
     // Delete user account
     const { error } = await supabase.from('users').delete().eq('id', userId);
-    
+
     if (error) {
       alert('Error deleting account. Please try again.');
     } else {
@@ -110,13 +114,20 @@ export default function Home() {
   }
 
   return (
-    <div className={`p-4 sm:p-8 ${roboto.className}`}>
+    <div className={`p-4 sm:p-8 ${roboto.className} bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100`}>
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row justify-between items-center mb-8">
-        <h1 className={`text-2xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-0 ${poppins.className}`}>
+        <h1 className={`text-2xl sm:text-3xl font-bold mb-4 sm:mb-0 ${poppins.className}`}>
           {user ? `${getGreeting()}, ${user.first_name}` : 'Welcome'}
         </h1>
         <div className="flex space-x-4">
+          {/* Theme Toggle Button */}
+          <button
+            onClick={toggleTheme}
+            className="bg-gray-200 dark:bg-gray-700 p-2 rounded hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+          >
+            {theme === 'light' ? '🌞' : '🌙'}
+          </button>
           <button
             onClick={handleLogout}
             className="bg-red-500 text-white p-2 rounded hover:bg-red-600 transition-colors"
@@ -142,20 +153,20 @@ export default function Home() {
 
       {/* Workspaces Section */}
       <div className="mt-8">
-        <h2 className={`text-xl sm:text-2xl font-bold text-gray-800 mb-6 ${poppins.className}`}>Your Workspaces</h2>
+        <h2 className={`text-xl sm:text-2xl font-bold mb-6 ${poppins.className}`}>Your Workspaces</h2>
         {workspaces.length === 0 ? (
-          <p className="text-gray-600">No workspaces found.</p>
+          <p className="text-gray-600 dark:text-gray-400">No workspaces found.</p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {workspaces.map((workspace, index) => (
               <div
                 key={workspace.id}
-                className="bg-white p-4 sm:p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer animate-fade-in"
+                className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer animate-fade-in"
                 style={{ animationDelay: `${index * 0.1}s` }}
                 onClick={() => router.push(`/workspace/${workspace.id}`)}
               >
-                <p className="text-gray-900 font-semibold text-lg">{workspace.name}</p>
-                <p className="text-gray-600 text-sm mt-2">ID: {workspace.id}</p>
+                <p className="text-gray-900 dark:text-gray-100 font-semibold text-lg">{workspace.name}</p>
+                <p className="text-gray-600 dark:text-gray-400 text-sm mt-2">ID: {workspace.id}</p>
               </div>
             ))}
           </div>
