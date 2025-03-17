@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { supabase } from '../../../lib/supabaseClient';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useTheme } from '../../../components/ThemeContext/ThemeContext'; // Import the ThemeProvider
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -14,7 +13,6 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const router = useRouter();
-  const { theme } = useTheme(); // Use the theme context
 
   const handleLogin = async () => {
     setLoading(true);

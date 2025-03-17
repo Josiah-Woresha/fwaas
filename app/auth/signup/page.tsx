@@ -4,7 +4,6 @@ import { useState } from "react";
 import { supabase } from "../../../lib/supabaseClient";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useTheme } from '../../../components/ThemeContext/ThemeContext'; // Import the ThemeProvider
 
 export default function SignUp() {
   const [firstName, setFirstName] = useState("");
@@ -18,7 +17,6 @@ export default function SignUp() {
   const [success, setSuccess] = useState(false);
   const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
   const router = useRouter();
-  const { theme } = useTheme(); // Use the theme context
 
   // Password validation function
   const validatePassword = (password: string) => {

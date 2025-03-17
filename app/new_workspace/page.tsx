@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../lib/supabaseClient";
 import { FaArrowLeft } from "react-icons/fa"; // Import the back arrow icon
-import { useTheme } from '../../components/ThemeContext/ThemeContext'; // Import the ThemeProvider
 
 export default function NewWorkspace() {
   const [workspaceName, setWorkspaceName] = useState("");
@@ -12,7 +11,6 @@ export default function NewWorkspace() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const router = useRouter();
-  const { theme } = useTheme(); // Use the theme context
 
   const handleCreateWorkspace = async () => {
     if (!workspaceName.trim()) {

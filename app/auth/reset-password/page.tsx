@@ -3,14 +3,12 @@
 import { useState } from "react";
 import { supabase } from "../../../lib/supabaseClient";
 import Link from "next/link";
-import { useTheme } from '../../../components/ThemeContext/ThemeContext'; // Import the ThemeProvider
 
 export default function ResetPassword() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
-  const { theme } = useTheme(); // Use the theme context
 
   const handleResetPassword = async () => {
     setLoading(true);

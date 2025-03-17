@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FaArrowLeft } from 'react-icons/fa';
-import { ThemeProvider } from '../ThemeContext/ThemeContext'; // Import the ThemeProvider
+import { useTheme } from '../../components/ThemeContext/ThemeContext'; // Import the ThemeProvider
 
 export default function Navbar({ isLoggedIn }: { isLoggedIn: boolean }) {
   const router = useRouter();

@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { supabase } from "../../../lib/supabaseClient";
 import { FaTrash, FaArrowLeft, FaCopy } from "react-icons/fa"; // Added FaCopy
-import { useTheme } from '../../../components/ThemeContext/ThemeContext'; // Import the ThemeProvider
 
 // Define types
 interface Workspace {
@@ -35,7 +34,6 @@ export default function WorkspacePage() {
   const [error, setError] = useState<string | null>(null);
   const [isCopied, setIsCopied] = useState(false); // State for copied status
   const router = useRouter();
-  const { theme } = useTheme(); // Use the theme context
 
   useEffect(() => {
     if (!workspaceId) {

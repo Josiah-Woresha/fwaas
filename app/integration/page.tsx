@@ -2,13 +2,11 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useTheme } from '../../components/ThemeContext/ThemeContext'; // Import the ThemeProvider
 
 export default function IntegrationPage() {
   const [copied, setCopied] = useState(false);
   const [activeTab, setActiveTab] = useState<'nextjs' | 'react' | 'vue' | 'angular' | 'reactnative'>('nextjs'); // Narrowed type
   const router = useRouter();
-  const { theme } = useTheme(); // Use the theme context
 
   // Code snippets for each technology
   const codeSnippets = {
