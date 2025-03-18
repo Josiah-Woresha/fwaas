@@ -68,11 +68,18 @@ export default function IntegrationPage() {
           script.src = 'https://get-your-feedback.vercel.app/widget.js';
           script.async = true;
           script.onload = () => {
-            window.FeedbackWidget.init({
-              websiteId: 'YOUR_WORKSPACE_ID',
-              position: 'bottom-right',
-              color: '#3498db',
-            });
+            if (window.FeedbackWidget) {
+              window.FeedbackWidget.init({
+                websiteId: 'YOUR_WORKSPACE_ID', // Replace with your workspace ID
+                position: 'bottom-right', // Position of the widget
+                color: '#3498db', // Widget color
+              });
+            } else {
+              console.error('FeedbackWidget is not available.');
+            }
+          };
+          script.onerror = () => {
+            console.error('Failed to load FeedbackWidget script.');
           };
           document.body.appendChild(script);
 
@@ -81,7 +88,7 @@ export default function IntegrationPage() {
           };
         }, []);
 
-        return null;
+        return null; // This component doesn't render anything
       };
 
       export default FeedbackWidget;
@@ -215,7 +222,7 @@ export default function IntegrationPage() {
           <section>
             <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">Step 1: Add the Script</h2>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
-              To embed the GYF widget, add the following code to your {activeTab === 'nextjs' ? 'Next.js' : activeTab} app.
+              To embed the GYF widget, add the following code to your FeedbackWidget component of your {activeTab === 'nextjs' ? 'Next.js' : activeTab} app.
             </p>
             <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg relative">
               <pre className="overflow-x-auto text-sm text-gray-800 dark:text-gray-200">
@@ -259,6 +266,28 @@ export default function IntegrationPage() {
                         </html>
                       );
                     }
+                    `}
+                  </code>
+                </pre>
+              </div>
+            )}
+            {activeTab === 'react' && (
+              <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
+                <pre className="overflow-x-auto text-sm text-gray-800 dark:text-gray-200">
+                  <code>
+                    {`
+                    import FeedbackWidget from './FeedbackWidget';
+
+                    function App() {
+                      return (
+                        <div>
+                          <h1>Welcome to My App</h1>
+                          <FeedbackWidget />
+                        </div>
+                      );
+                    }
+
+                    export default App;
                     `}
                   </code>
                 </pre>
