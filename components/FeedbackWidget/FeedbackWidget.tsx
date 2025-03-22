@@ -24,7 +24,7 @@ export default function FeedbackWidget() {
         // Initialize the feedback widget after the script has loaded
         if (typeof window.FeedbackWidget !== 'undefined') {
           window.FeedbackWidget.init({
-            websiteId: 'e4b77bfe-a4f4-41e6-a468-d5e77c69a9ee', // Replace with a valid workspace ID
+            websiteId: 'f86ca5d2-d0a4-4a46-80ea-876de13ca05f', // Replace with a valid workspace ID
             position: 'bottom-right',
             color: '#232526',
           });
